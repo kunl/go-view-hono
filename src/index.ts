@@ -14,8 +14,8 @@ app.get('/', (c) => {
 
 const url = [
   '/api/goview/sys/login',
-  '/api/goview/sys/logout', 
-  '/api/goview/sys/register', 
+  '/api/goview/sys/logout',
+  '/api/goview/sys/register',
   '/api/goview/sys/getOssInfo',
   '/api/goview/project/getData'
 ]
@@ -37,12 +37,29 @@ const userAuth = createMiddleware<{ Bindings: Bindings, Variables: Variables }>(
 
   const secretKey = c.env.JWT_SECRET
 
-  const decodedPayload = await jwtVerify(token, secretKey)
+  try {
+    const decodedPayload = await jwtVerify(token, secretKey)
+    const user = decodedPayload as User
 
-  const user = decodedPayload as User
+    if (!user) {
+      return c.json({
+        code: 401,
+        msg: 'token 无效'
+      })
+    }
 
-  c.set('user', user)
-  c.set('createUserId', user.id)
+    console.log('login user', user.id)
+    c.set('user', user)
+    c.set('createUserId', user.id)
+
+  } catch (e) {
+    return c.json({
+      code: 401,
+      msg: 'token 无效 !'
+    })
+  }
+
+
 
   await next()
 })
