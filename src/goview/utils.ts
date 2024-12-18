@@ -17,8 +17,8 @@ export const verifyPassword = (password: string, hash: string) => {
     return bcrypt.compareSync(password, hash)
 }
 
-export const hashPassword = (password: string) => {
-    return bcrypt.hashSync(password, 15)
+export const hashPassword = async (password: string) => {
+    return bcrypt.hash(password, 10)
 }
 
 export const jwtVerify = async (token: string, secretKey: string) => {

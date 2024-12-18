@@ -81,10 +81,13 @@ route.post('/register', async (c) => {
     const db = drizzle(c.env.DB, {schema})
 
     const salt = Math.random().toString(16).slice(2)
-    const pwd =  hashPassword(password + salt)
+    const pwd =  await hashPassword(password + salt)
 
     const res = await db.insert(schema.users).values({
         username, password: pwd, nickname, salt
+    }).catch((e) => {
+        console.log(e)
+        return null
     })
 
     if(!res) {
