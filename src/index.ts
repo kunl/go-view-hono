@@ -1,4 +1,5 @@
-import { Hono } from 'hono'
+import { Hono,  } from 'hono'
+import { html, raw } from 'hono/html'
 import { cors } from 'hono/cors'
 import { createMiddleware } from 'hono/factory'
 import goViewHandler from './goview/index'
@@ -10,7 +11,20 @@ const app = new Hono<{ Bindings: Bindings }>()
 
 
 app.get('/', (c) => {
-  return c.text('Hello Hono!')
+ 
+
+  return c.html(
+    html`
+      <html>
+        <head>
+          <title>Go View</title>
+        </head>
+        <body>
+          Hello Hono! \n运行在 cloudflare 上的 <a href="https://gitee.com/dromara/go-view" target="_blank">go-view</a> 服务端
+        </body>
+      </html>
+    `
+  )
 })
 
 const url = [
