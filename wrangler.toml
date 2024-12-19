@@ -28,7 +28,7 @@ bucket_name = "go-view"
 [[d1_databases]]
 binding = "DB"
 database_name = "go-view"
-database_id = "fdb6b816-f05c-471e-9ff3-7cd6d52fadde"
+database_id = "7062761e-0b13-4435-8920-4ca21e433161"
 
 
 # [ai]

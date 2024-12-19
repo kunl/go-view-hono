@@ -23,12 +23,16 @@ route.post('/create', async (c) => {
     const {PROJECT_COUNT_UN_LIMIT_USER, PROJECT_COUNT_LIMIT} = c.env
     const unLimitUser = PROJECT_COUNT_UN_LIMIT_USER.split(',')
 
+        // 根据用户，限制创建 项目的数量 PROJECT_COUNT_LIMIT
     if (projectCount[0].count >= PROJECT_COUNT_LIMIT && !unLimitUser.includes(createUserId.toString())) {
         return c.json(response({}, 400, '项目数量已达上限')
         )
     }
-    // 根据用户，限制创建 项目的数量 PROJECT_COUNT_LIMIT
+
+    const projectId =  crypto.randomUUID()
+
     const it = await db.insert(schema.projects).values({
+        projectId,
         projectName, remarks,
         createTime: dayjsNow(),
         createUserId
@@ -36,7 +40,7 @@ route.post('/create', async (c) => {
 
 
 
-    return c.json(response(it[0], 200, '创建成功'))
+    return c.json(response({...it[0], id:projectId }, 200, '创建成功'))
 })
 
 
@@ -46,19 +50,16 @@ route.post('/save/data', async (c) => {
     const formData = await c.req.formData()
     const createUserId = c.var.createUserId
 
-
-    const projectId = formData.get('projectId')
+    const projectId = formData.get('projectId') as string
     const content = formData.get('content') as string
 
     const updateTime = dayjsNow()
 
 
-
-
     const db = drizzle(c.env.DB, { schema })
 
     const res = await db.insert(schema.projectDatas).values({
-        projectId: +projectId!,
+        projectId,
         content,
         createTime: dayjsNow(),
         createUserId
@@ -116,6 +117,8 @@ route.delete('/delete', async (c) => {
 route.get('/list', async (c) => {
     const db = drizzle(c.env.DB)
     const createUserId = c.var.createUserId
+
+    console.log('createUserId', createUserId)
     const res = await db.select().from(schema.projects).where(eq(schema.projects.createUserId, createUserId)).all()
 
     return c.json(response(res))
@@ -123,9 +126,19 @@ route.get('/list', async (c) => {
 
 route.get('/getData', async (c) => {
     const id = c.req.query('projectId')
+    const createUserId = c.var.createUserId
+
     const db = drizzle(c.env.DB)
     if (id) {
-        const res = await (await db.select().from(schema.projectDatas)).findLast(e => e.projectId == +id)
+        const res = await (await db.select().from(schema.projectDatas)).findLast(e => e.projectId == id)
+
+        console.log('getData project ', res?.id, createUserId)
+ 
+
+        // if(res.createUserId != createUserId) {
+        //     return c.json(response({}, 403, '没有权限'))
+        // }
+
         return c.json(response(res))
     }
 

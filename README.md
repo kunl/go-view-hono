@@ -1,8 +1,9 @@
+# go-view 服务器
+访问地址 https://goview.w00000.fun/
+前端项目修改 .env 文件 VITE_DEV_PATH = 'https://goview.w00000.fun'
 
 
 # 开发
-
-
 ## R2 配置
 ```shell
 # 创建 bucket

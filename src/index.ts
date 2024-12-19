@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 import { createMiddleware } from 'hono/factory'
 import goViewHandler from './goview/index'
 import { jwtVerify } from './goview/utils'
@@ -55,7 +56,7 @@ const userAuth = createMiddleware<{ Bindings: Bindings, Variables: Variables }>(
   } catch (e) {
     return c.json({
       code: 401,
-      msg: 'token 无效 !'
+      msg: 'token 失效'
     })
   }
 
@@ -64,6 +65,15 @@ const userAuth = createMiddleware<{ Bindings: Bindings, Variables: Variables }>(
   await next()
 })
 
+
+app.use('/api/goview/*',
+  cors({
+    origin: '*',
+    allowMethods: ['POST', 'GET', 'OPTIONS', 'PUT', 'DELETE'],
+    maxAge: 600,
+    credentials: true,
+  })
+)
 
 app.use('/api/goview/*', userAuth)
 

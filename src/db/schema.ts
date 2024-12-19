@@ -13,6 +13,7 @@ export const users = sqliteTable('users', {
 
 export const projects = sqliteTable('projects', {
     id: integer('id').primaryKey({ autoIncrement: true }),
+    projectId: text('projectId').notNull().unique(),
     projectName: text('projectName').notNull(),
     indexImage: text('indexImage'),
     remarks: text('remarks'),
@@ -26,7 +27,7 @@ export const projects = sqliteTable('projects', {
 
 export const projectDatas = sqliteTable('projectDatas', {
     id: integer('id').primaryKey({ autoIncrement: true }),
-    projectId: integer('projectId').notNull(),
+    projectId:  text('projectId').notNull(),
     createTime: text('createTime').notNull().default(dayjs().format('YYYY-MM-DD HH:mm:ss')),
     createUserId: integer('createUserId').notNull(),
     content: text('content').notNull(),

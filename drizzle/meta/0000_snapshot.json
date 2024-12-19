@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "cd254454-4010-4524-aed9-43c28605ac33",
+  "id": "e940d883-550d-4776-8873-aa6011ee494f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "projectDatas": {
@@ -16,7 +16,7 @@
         },
         "projectId": {
           "name": "projectId",
-          "type": "integer",
+          "type": "text",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
@@ -26,7 +26,8 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "'2024-12-19 11:21:43'"
         },
         "createUserId": {
           "name": "createUserId",
@@ -47,7 +48,8 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": false,
+          "default": "'2024-12-19 11:21:43'"
         }
       },
       "indexes": {
@@ -73,6 +75,13 @@
           "primaryKey": true,
           "notNull": true,
           "autoincrement": true
+        },
+        "projectId": {
+          "name": "projectId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
         },
         "projectName": {
           "name": "projectName",
@@ -117,7 +126,7 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'1734489598368'"
+          "default": "'2024-12-19 11:21:43'"
         },
         "createUserId": {
           "name": "createUserId",
@@ -133,10 +142,18 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
-          "default": "'1734489598368'"
+          "default": "'2024-12-19 11:21:43'"
         }
       },
-      "indexes": {},
+      "indexes": {
+        "projects_projectId_unique": {
+          "name": "projects_projectId_unique",
+          "columns": [
+            "projectId"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
@@ -171,6 +188,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "salt": {
+          "name": "salt",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },
