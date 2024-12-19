@@ -7,7 +7,12 @@ compatibility_date = "2024-12-17"
 [vars]
 # MY_VAR = "my-variable"
 BUCKET_NAME = "go-view"
-PROJECT_COUNT_LIMIT= 2
+BUCKET_URL =  "https://pub-3bf090057a5b4ffdb351ddf02025d193.r2.dev/"
+
+# 限制每个用户创建 项目的数量
+PROJECT_COUNT_LIMIT= 5
+PROJECT_COUNT_UN_LIMIT_USER= "1,2,3"
+
 # 24 * 60 * 60
 JWT_EXPIRES=86400
 TOKEN_NAME = 'goViewHonoToken'
@@ -32,3 +37,6 @@ database_id = "fdb6b816-f05c-471e-9ff3-7cd6d52fadde"
 # [observability]
 # enabled = true
 # head_sampling_rate = 1
+
+[observability.logs]
+enabled = true

@@ -2,7 +2,7 @@ import { Hono } from "hono";
 import { response, dayjsNow } from "./utils";
 
 import { drizzle } from 'drizzle-orm/d1';
-import { eq } from 'drizzle-orm';
+import { eq, count } from 'drizzle-orm';
 import * as schema from '../db/schema';
 
 
@@ -18,7 +18,15 @@ route.post('/create', async (c) => {
     const createUserId = c.var.createUserId
 
     const db = drizzle(c.env.DB, { schema })
+    const projectCount = await db.select({ count: count() }).from(schema.projects).where(eq(schema.projects.createUserId, createUserId));
 
+    const {PROJECT_COUNT_UN_LIMIT_USER, PROJECT_COUNT_LIMIT} = c.env
+    const unLimitUser = PROJECT_COUNT_UN_LIMIT_USER.split(',')
+
+    if (projectCount[0].count >= PROJECT_COUNT_LIMIT && !unLimitUser.includes(createUserId.toString())) {
+        return c.json(response({}, 400, '项目数量已达上限')
+        )
+    }
     // 根据用户，限制创建 项目的数量 PROJECT_COUNT_LIMIT
     const it = await db.insert(schema.projects).values({
         projectName, remarks,
@@ -107,7 +115,8 @@ route.delete('/delete', async (c) => {
 
 route.get('/list', async (c) => {
     const db = drizzle(c.env.DB)
-    const res = await db.select().from(schema.projects).all()
+    const createUserId = c.var.createUserId
+    const res = await db.select().from(schema.projects).where(eq(schema.projects.createUserId, createUserId)).all()
 
     return c.json(response(res))
 })

@@ -1,6 +1,4 @@
- 
-
-type Bindings = {
+ type Bindings = {
     MY_BUCKET: R2Bucket
     R2: R2Bucket
     DB: D1Database
@@ -9,6 +7,8 @@ type Bindings = {
     TOKEN_NAME: string
     JWT_SECRET: string
     JWT_EXPIRES: number
+    PROJECT_COUNT_LIMIT: number
+    PROJECT_COUNT_UN_LIMIT_USER: string
 }
 
 
