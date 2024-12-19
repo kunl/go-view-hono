@@ -28,10 +28,12 @@ app.get('/', (c) => {
 })
 
 const url = [
+  '/api/goview/oss',
   '/api/goview/sys/login',
   '/api/goview/sys/logout',
   '/api/goview/sys/register',
   '/api/goview/sys/getOssInfo',
+  '/api/goview/project/upload',
   '/api/goview/project/getData'
 ]
 
@@ -39,7 +41,8 @@ const userAuth = createMiddleware<{ Bindings: Bindings, Variables: Variables }>(
   const token = c.req.header(c.env.TOKEN_NAME)
   const path = c.req.path
 
-  if (url.includes(path)) {
+
+  if (url.find(e => path.includes(e))) {
     return await next()
   }
 

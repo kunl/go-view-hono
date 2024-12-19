@@ -1,4 +1,4 @@
-BUCKET_URL=https://pub-3bf090057a5b4ffdb351ddf02025d193.r2.dev/
+BUCKET_URL=/api/goview/oss/
 
 D1_ACCOUNT_ID=D1_ACCOUNT_ID
 D1_DATABASE_ID=fdb6b816-f05c-471e-9ff3-7cd6d52fadde
