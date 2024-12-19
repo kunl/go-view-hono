@@ -121,7 +121,14 @@ route.get('/list', async (c) => {
     console.log('createUserId', createUserId)
     const res = await db.select().from(schema.projects).where(eq(schema.projects.createUserId, createUserId)).all()
 
-    return c.json(response(res))
+    const data = res.map(e => {
+        return {
+            ...e,
+            id: e.projectId || e.id
+        }
+    })
+
+    return c.json(response(data))
 })
 
 route.get('/getData', async (c) => {
