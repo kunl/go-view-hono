@@ -55,7 +55,7 @@ route.post('/save/data', async (c) => {
 
     const updateTime = dayjsNow()
 
-
+    console.log('projectId', projectId)
     const db = drizzle(c.env.DB, { schema })
 
     const res = await db.insert(schema.projectDatas).values({
@@ -132,12 +132,12 @@ route.get('/list', async (c) => {
 })
 
 route.get('/getData', async (c) => {
-    const id = c.req.query('projectId')
+    const projectId = c.req.query('projectId')
     const createUserId = c.var.createUserId
 
     const db = drizzle(c.env.DB)
-    if (id) {
-        const res = await (await db.select().from(schema.projectDatas)).findLast(e => e.projectId == id)
+    if (projectId) {
+        const res = await (await db.select().from(schema.projectDatas)).findLast(e => e.projectId == projectId)
 
         console.log('getData project ', res?.id, createUserId)
  
@@ -146,7 +146,7 @@ route.get('/getData', async (c) => {
         //     return c.json(response({}, 403, '没有权限'))
         // }
 
-        return c.json(response(res))
+        return c.json(response({...res, id: projectId}))
     }
 
     return c.json(response({}))
