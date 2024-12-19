@@ -84,7 +84,7 @@ route.post('/edit', async (c) => {
     await db.update(schema.projects).set({
         projectName, indexImage, remarks, createUserId,
         updateTime: dayjsNow()
-    }).where(eq(schema.projects.id, +id!))
+    }).where(eq(schema.projects.projectId, id!))
 
     return c.json(response({}))
 })
@@ -98,7 +98,7 @@ route.put('/publish', async (c) => {
     await db.update(schema.projects).set({
         state,
         updateTime: dayjsNow()
-    }).where(eq(schema.projects.id, +id!))
+    }).where(eq(schema.projects.projectId, id!))
 
     return c.json(response({}))
 })
@@ -107,8 +107,8 @@ route.delete('/delete', async (c) => {
     const id = c.req.query('ids')
     const db = drizzle(c.env.DB, { schema })
 
-    await db.delete(schema.projects).where(eq(schema.projects.id, +id!))
-    await db.delete(schema.projectDatas).where(eq(schema.projectDatas.projectId, +id!))
+    await db.delete(schema.projects).where(eq(schema.projects.projectId, id!))
+    await db.delete(schema.projectDatas).where(eq(schema.projectDatas.projectId, id!))
 
     return c.json(response({}, 200, '删除成功'))
 })
@@ -126,7 +126,7 @@ route.get('/list', async (c) => {
             ...e,
             id: e.projectId || e.id
         }
-    })
+    }) || []
 
     return c.json(response(data))
 })
