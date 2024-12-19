@@ -2,7 +2,7 @@ import dayjs from 'dayjs'
 import bcrypt from 'bcryptjs'
 import { verify } from 'hono/jwt'
 
-export const response = (data: any, code = 200, msg = '返回成功') => {
+export const response = (data: unknown, code = 200, msg = '返回成功') => {
     return {
         code,
         msg,

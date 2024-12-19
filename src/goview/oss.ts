@@ -7,7 +7,7 @@ route.get('/:filePath/:fileName', async (c) => {
     const filePath = c.req.param('filePath')
 
     try {
-        const file = await c.env.MY_BUCKET.get(filePath + '/' + fileName)
+        const file = await c.env.MY_BUCKET.get(`${filePath}/${fileName}`)
 
         if (file) {
             return new Response(file.body)

@@ -102,11 +102,6 @@ route.get('/logout', async (c) => {
     const query = c.req.query('Cookie') || ''
     const {TOKEN_NAME} = c.env
 
-    const tokenToVerify = query.replace(TOKEN_NAME + '=', '')
-
-    const secretKey = c.env.JWT_SECRET
- 
-
     return c.json(response({}, 200, '注销成功'))
 })
 
